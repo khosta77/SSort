@@ -303,6 +303,6 @@ namespace stepan_sort {
 };
 
 using namespace stepan_sort;
-//using ss = stepan_sort;
+using ss = stepan_sort;
 
 #endif  // PROJECT_INCLUDE_STEPANSORT_H_

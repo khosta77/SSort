@@ -32,11 +32,14 @@ int main(int argc, char **argv) {
     int mass[SIZE] = {10, 1, 2, 3, 9, 8, 7, 5, 6, 4};
     fprintf(mass, SIZE);
     cout << "-==================-" << endl;
-    for (size_t i = 0; i < SIZE_ARRAYS; i++) {
-        (m.*trs[0])(mass, SIZE);
-        fprintf(mass, SIZE);
-        randmass(mass, SIZE);
-    }
+    ss::Bubble(mass, SIZE);
+    fprintf(mass, SIZE);
+    randmass(mass, SIZE);
+//    for (size_t i = 0; i < SIZE_ARRAYS; i++) {
+//        (m.*trs[0])(mass, SIZE);
+//        fprintf(mass, SIZE);
+//        randmass(mass, SIZE);
+//    }
     return 0;
 }
 
