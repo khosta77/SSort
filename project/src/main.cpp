@@ -16,15 +16,27 @@ void randmass(T *mas, const T N) {
     }
 }
 
+// Нельзя создать массив функция, чтобы шаблоны принемали?
+//template <typename T>
+typedef void (StepanSort::*srt) (int *mass, const int N);
+
+const size_t SIZE_ARRAYS = 3;
+srt trs[] = {
+        &StepanSort::Bubble,
+        &StepanSort::Merge,
+        &StepanSort::Gnome
+};
+
 int main(int argc, char **argv) {
-    StepanSort srt;
     const int SIZE = 10;
     int mass[SIZE] = {10, 1, 2, 3, 9, 8, 7, 5, 6, 4};
     fprintf(mass, SIZE);
-    srt.Bubble(mass, SIZE);
-    fprintf(mass, SIZE);
-    randmass(mass, SIZE);
-    fprintf(mass, SIZE);
+    cout << "-==================-" << endl;
+    for (size_t i = 0; i < SIZE_ARRAYS; i++) {
+        (m.*trs[0])(mass, SIZE);
+        fprintf(mass, SIZE);
+        randmass(mass, SIZE);
+    }
     return 0;
 }
 

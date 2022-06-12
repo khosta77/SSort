@@ -86,7 +86,7 @@ namespace stepan_sort {
 //        // Непрактичные алгоритмы сортировки
 //        template<typename T>
 //        void Bogo(T *mas, const T N); // не использовать после N >= 12 => t > 8 секунд
-    };
+    } m;
 
 //    template<typename T>
 //    inline void StepanSort::stoogesort(T *mas, T l, T r) {
