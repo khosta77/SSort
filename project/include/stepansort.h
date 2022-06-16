@@ -8,6 +8,7 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -215,6 +216,7 @@ namespace stepan_sort {
             remove("tree.txt");
         }
 
+    private:
         // класс, представляющий бинарное дерево - взят с википедии
         class BinaryTree {
         protected:
@@ -292,7 +294,10 @@ namespace stepan_sort {
                 visit_recursive(m_root, visitor);
             }
         };
+    public:
 //------------------------------------------------------------------------------------------------------------
+        const static auto RUN = 32; /* Шаг в битах */
+
         /** \brief Сортировка Timsort - Гибрид сортировок вставками и слиянием. Основан на предположении,
          * что при решении практических задач входной массив зачастую состоит из отсортированных подмассивов
          * \param mas массив
@@ -303,8 +308,70 @@ namespace stepan_sort {
          * */
         template<typename T1, typename T2>
         void Tim(T1 *mas, const T2 N) {
-            Bubble(mas, N);
+            for (T2 i = 0; i < N; i+=RUN) {
+                insertionSort(mas, i, min((i + RUN - 1), (N - 1)));
+            }
+            for (T2 size = RUN; size < N; size = 2*size) {
+                for (T2 left = 0; left < N; left += 2*size) {
+                    T2 mid = left + size - 1;
+                    T2 right = min((left + 2*size - 1), (N-1));
+                    if(mid < right) {
+                        merge(mas, left, mid, right);
+                    }
+                }
+            }
         }
+
+    private:
+        template<typename T1, typename T2>
+        static void insertionSort(T1 *arr, T2 left, T2 right) {
+            for (T2 i = left + 1; i <= right; i++) {
+                T1 temp = arr[i];
+                T2 j = i - 1;
+                while (j >= left && arr[j] > temp) {
+                    arr[j+1] = arr[j];
+                    j--;
+                }
+                arr[j+1] = temp;
+            }
+        }
+
+        template<typename T1, typename T2>
+        static void merge(T1 *arr, T2 l, T2 m, T2 r) {
+            T2 len1 = m - l + 1, len2 = r - m;
+            T1 left[len1], right[len2];
+            for (T2 i = 0; i < len1; i++) {
+                left[i] = arr[l + i];
+            }
+            for (T2 i = 0; i < len2; i++) {
+                right[i] = arr[m + 1 + i];
+            }
+
+            T2 i = 0;
+            T2 j = 0;
+            T2 k = l;
+            while (i < len1 && j < len2) {
+                if (left[i] <= right[j]){
+                    arr[k] = left[i];
+                    i++;
+                } else {
+                    arr[k] = right[j];
+                    j++;
+                }
+                k++;
+            }
+            while (i < len1) {
+                arr[k] = left[i];
+                k++;
+                i++;
+            }
+            while (j < len2) {
+                arr[k] = right[j];
+                k++;
+                j++;
+            }
+        }
+    public:
 //============================================================================================================
 /*                                Алгоритмы неустойчивой сортировки                                         */
 //------------------------------------------------------------------------------------------------------------
