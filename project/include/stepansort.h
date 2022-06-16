@@ -454,9 +454,6 @@ namespace stepan_sort {
     public:
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
-        void Smooth(T1 *mas, const T2 N);
-//------------------------------------------------------------------------------------------------------------
-        template<typename T1, typename T2>
         void Quick(T1 *mas, const T2 N) {
             T2 left = 0;
             T2 right = N - 1;
@@ -481,9 +478,6 @@ namespace stepan_sort {
                 Quick(&mas[left], N - left);
             }
         }
-//------------------------------------------------------------------------------------------------------------
-        template<typename T1, typename T2>
-        void Intro(T1 *mas, const T2 N);
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
         void Stooge (T1 *mas, const T2 N) {
