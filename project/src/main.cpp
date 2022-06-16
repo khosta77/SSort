@@ -1,15 +1,15 @@
 #include "../include/stepansort.h"
 
-template <typename T>
-void fprintf(T *mas, const T N) {
+template<typename T1, typename T2>
+void fprintf(T1 *mas, const T2 N) {
     for (size_t i = 0; i < N; i++) {
         cout << mas[i] << " ";
     }
     cout << endl;
 }
 
-template <typename T>
-void randmass(T *mas, const T N) {
+template<typename T1, typename T2>
+void randmass(T1 *mas, const T2 N) {
     int buf_mass[] = {10, 1, 2, 3, 9, 8, 7, 5, 6, 4};
     for (size_t i = 0; i < N; i++) {
         mas[i] = buf_mass[i];
@@ -18,28 +18,34 @@ void randmass(T *mas, const T N) {
 
 // Нельзя создать массив функция, чтобы шаблоны принемали?
 //template <typename T>
+
 typedef void (StepanSort::*srt) (int *mass, const int N);
 
-const size_t SIZE_ARRAYS = 3;
+const size_t SIZE_ARRAYS = 5;
 srt trs[] = {
         &StepanSort::Bubble,
         &StepanSort::Merge,
-        &StepanSort::Gnome
+        &StepanSort::Gnome,
+        &StepanSort::Shell,
+        &StepanSort::Insertion
 };
+
 
 int main(int argc, char **argv) {
     const int SIZE = 10;
     int mass[SIZE] = {10, 1, 2, 3, 9, 8, 7, 5, 6, 4};
     fprintf(mass, SIZE);
-    cout << "-==================-" << endl;
-    ss::Bubble(mass, SIZE);
-    fprintf(mass, SIZE);
-    randmass(mass, SIZE);
-//    for (size_t i = 0; i < SIZE_ARRAYS; i++) {
-//        (m.*trs[0])(mass, SIZE);
-//        fprintf(mass, SIZE);
-//        randmass(mass, SIZE);
-//    }
+    cout << "-=====================-" << endl;
+//    StepanSort::Bubble(mass, SIZE);
+//    fprintf(mass, SIZE);
+//    randmass(mass, SIZE);
+//    cout << "!==================!" << endl;
+    for (size_t i = 0; i < SIZE_ARRAYS; i++) {
+        (m.*trs[0])(mass, SIZE);
+        cout << i << "|";
+        fprintf(mass, SIZE);
+        randmass(mass, SIZE);
+    }
     return 0;
 }
 
