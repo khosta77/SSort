@@ -21,13 +21,21 @@ void randmass(T1 *mas, const T2 N) {
 
 typedef void (StepanSort::*srt) (int *mass, const int N);
 
-const size_t SIZE_ARRAYS = 5;
+const size_t SIZE_ARRAYS = 13;
 srt trs[] = {
         &StepanSort::Bubble,
-        &StepanSort::Merge,
+        &StepanSort::Cocktail,
+        &StepanSort::Insertion,
         &StepanSort::Gnome,
+        &StepanSort::Merge,
+        &StepanSort::Tree,
+        &StepanSort::Tim,
+        &StepanSort::Selection,
+        &StepanSort::Comb,
         &StepanSort::Shell,
-        &StepanSort::Insertion
+        &StepanSort::Heap,
+        &StepanSort::Quick,
+        &StepanSort::Stooge
 };
 
 
