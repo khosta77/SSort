@@ -416,7 +416,42 @@ namespace stepan_sort {
         }
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
-        void Heap(T1 *mas, const T2 N);
+        void Heap(T1 *mas, const T2 N) {
+            // Формируем нижний ряд пирамиды
+            for (T2 i = (N / 2); i >= 0; i--)
+                siftDown(mas, i, N - 1);
+            // Просеиваем через пирамиду остальные элементы
+            for (T2 i = N - 1; i >= 1; i--) {
+                swap(mas[0], mas[i]);
+                siftDown(mas, 0, i - 1);
+            }
+        }
+
+    private:
+        template<typename T1, typename T2>
+        static void siftDown(T1 *numbers, T2 root, T2 bottom) {
+            T2 maxChild; // индекс максимального потомка
+            T2 done = 0; // флаг того, что куча сформирована
+            // Пока не дошли до последнего ряда
+            while ((root * 2 <= bottom) && (!done)) {
+                if (root * 2 == bottom) {    // если мы в последнем ряду,
+                    maxChild = root * 2;    // запоминаем левый потомок
+                    // иначе запоминаем больший потомок из двух
+                } else if (numbers[root * 2] > numbers[root * 2 + 1]) {
+                    maxChild = root * 2;
+                } else {
+                    maxChild = root * 2 + 1;
+                }
+                // если элемент вершины меньше максимального потомка
+                if (numbers[root] < numbers[maxChild]) {
+                    swap(numbers[root], numbers[maxChild]);
+                    root = maxChild;
+                } else {
+                    done = 1; // пирамида сформирована
+                }
+            }
+        }
+    public:
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
         void Smooth(T1 *mas, const T2 N);
