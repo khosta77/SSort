@@ -3,6 +3,11 @@
 
 #include <iostream>
 #include <exception>
+#include <fstream>
+#include <memory>
+#include <cassert>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -178,8 +183,115 @@ namespace stepan_sort {
          * */
         template<typename T1, typename T2>
         void Tree(T1 *mas, const T2 N) {
-            Bubble(mas, N);
+            BinaryTree tree;
+            for (T2 i = 0; i < N; i++) {
+                tree.insert(mas[i]);
+            }
+            tree.visit([](int visited_key) {
+                ofstream fileout;
+                fileout.open("tree.txt", std::ios::app);
+                fileout << visited_key << " ";
+                fileout.close();
+            });
+            // Это костыль за который мне очень стыдно. Человек который это читает - не читай!
+            // Его надо переделать. Но мне было лень. И красиво не очень выходило. оставил как есть
+            ifstream fin;
+            fin.open("tree.txt");
+            if (!fin.is_open()) {
+                return;
+            }
+            char str[255]; char sym = ' '; size_t counter = 0; T2 i = 0;
+            do {
+                char ch = fin.get();
+                if (ch == sym ) {
+                    mas[i] = atoi(str);
+                    i++;
+                    str[0] = '\0';
+                    counter = 0;
+                }
+                str[counter++] = ch;
+            } while( !fin.eof() );
+            fin.close();
+            remove("tree.txt");
         }
+
+        // класс, представляющий бинарное дерево - взят с википедии
+        class BinaryTree {
+        protected:
+            // узел бинарного дерева
+            struct BinaryTreeNode {
+                shared_ptr<BinaryTreeNode> left, right; // левое и правое поддерево
+                double key; // ключ
+            };
+
+            shared_ptr<BinaryTreeNode> m_root; // корень дерева
+        protected:
+            // рекурсивная процедура вставки ключа
+            // cur_node - текущий узел дерева, с которым сравнивается вставляемый узел
+            // node_to_insert - вставляемый узел
+            void insert_recursive (const shared_ptr<BinaryTreeNode>& cur_node,
+                                   const shared_ptr<BinaryTreeNode>& node_to_insert) {
+                assert(cur_node != nullptr);
+                // сравнение
+                bool insertIsLess = node_to_insert->key < cur_node->key;
+                if (insertIsLess) {
+                    // вставка в левое поддерево
+                    if (cur_node->left == nullptr) {
+                        cur_node->left = node_to_insert;
+                    } else {
+                        insert_recursive(cur_node->left, node_to_insert);
+                    }
+                }
+                else {
+                    // вставка в правое поддерево
+                    if (cur_node->right == nullptr) {
+                        cur_node->right = node_to_insert;
+                    } else {
+                        insert_recursive(cur_node->right, node_to_insert);
+                    }
+                }
+            }
+        public:
+            void insert (double key) {
+                shared_ptr<BinaryTreeNode> node_to_insert(new BinaryTreeNode);
+                node_to_insert->key = key;
+
+                if(m_root == nullptr) {
+                    m_root = node_to_insert;
+                    return;
+                }
+
+                insert_recursive(m_root, node_to_insert);
+            }
+
+            public:
+                typedef function <void(double key)> Visitor;
+
+        protected:
+            // рекурсивная процедура обхода дерева
+            // cur_node - посещаемый в данный момент узел
+            void visit_recursive (const shared_ptr<BinaryTreeNode>& cur_node, const Visitor& visitor) {
+                assert(cur_node != nullptr);
+
+                // сначала посещаем левое поддерево
+                if(cur_node->left != nullptr)
+                    visit_recursive(cur_node->left, visitor);
+
+                // посещаем текущий элемент
+                visitor(cur_node->key);
+
+                // посещаем правое поддерево
+                if(cur_node->right != nullptr)
+                    visit_recursive(cur_node->right, visitor);
+            }
+
+        public:
+            void visit(const Visitor& visitor) {
+                if(m_root == nullptr)
+                    return;
+                visit_recursive(m_root, visitor);
+            }
+        };
 //------------------------------------------------------------------------------------------------------------
         /** \brief Сортировка Timsort - Гибрид сортировок вставками и слиянием. Основан на предположении,
          * что при решении практических задач входной массив зачастую состоит из отсортированных подмассивов
@@ -197,7 +309,7 @@ namespace stepan_sort {
 /*                                Алгоритмы неустойчивой сортировки                                         */
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
-        void Selection (T *mas, const T N) {
+        void Selection (T1 *mas, const T2 N) {
         for (T2 i = 0; i < N; i++) {
             T2 min = i;
             for (int j = i; j < N; j++) {
@@ -212,7 +324,7 @@ namespace stepan_sort {
     }
 //------------------------------------------------------------------------------------------------------------
         template<typename T1, typename T2>
-        void Comb(T *mas, const T N) {
+        void Comb(T1 *mas, const T2 N) {
             double factor = 1.2473309;
             T2 step = N - 1;
             while (step >= 1) {
@@ -281,7 +393,7 @@ namespace stepan_sort {
             if (l >= r) {
                 return;
             }
-            if (arr[l] > mas[r]) {
+            if (mas[l] > mas[r]) {
                 swap(mas[l], mas[r]);
             }
             if (r - l + 1 > 2) {
