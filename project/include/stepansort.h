@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_STEPANSORT_H_
-#define PROJECT_INCLUDE_STEPANSORT_H_
+#ifndef STEPANSORT_H
+#define STEPANSORT_H
 
 #include <iostream>
 #include <exception>
@@ -13,7 +13,44 @@
 using namespace std;
 
 namespace stepan_sort {
-/** \class - Содержит в себе различные сортировки
+/** \class - Содержит в себе различные сортировки, все сортировки которые реализованы и работают:
+ * Алгоритмы устойчивой сортировки
+ * =================
+ * \Bubble_sort    | \
+ * ----------------+  \
+ * \Cocktail_sort  |   \
+ * ----------------+   |
+ * \Insertion_sort |   |
+ * ----------------+   |
+ * \Gnome_sort     |   |
+ * ----------------+   |    Алгоритмы устойчивой сортировки
+ * \Merge_sort     |   |
+ * ----------------+   |
+ * \Tree_sort      |   |
+ * ----------------+   /
+ * \Timsort        |  /
+ * ----------------+ /
+ * =================
+ * \Selection_sort | \
+ * ----------------+  \
+ * \Comb_sort      |   \
+ * ----------------+   |
+ * \Shell_sort     |   |
+ * ----------------+   |
+ * \Heapsort       |   |    Алгоритмы неустойчивой сортировки
+ * ----------------+   |
+ * \Quicksort      |   |
+ * ----------------+   /
+ * \Stooge_sort    |  /
+ * ----------------+ /
+ * "Непрактичные алгоритмы сортировки" и "Алгоритмы, не основывающиеся на сравнениях" \
+ *        \ - не реализовал, не имеет смысла
+ * как моэно обратится к алгоритмам:
+ *
+ *     ss::{\имя_сортировки}({\массив}, {\его_длину});
+ *
+ * он вернется отсортированным.
+ *
  * P. s. Реализованы как оффициальные, так и не оффицальные(то есть не эффективные сортировки - за чем? \
  *    \ В учебных целях и просто было интересно.)
  * */
@@ -43,7 +80,7 @@ namespace stepan_sort {
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
-        void Bubble (T1 *mas, const T2 N) {
+        static void Bubble (T1 *mas, const T2 N) {
             for (T2 i = 0; i < N; i++) {
                 for (T2 j = 0; j < N; j++) {
                     if (mas[i] < mas[j]) {
@@ -61,7 +98,7 @@ namespace stepan_sort {
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
-        void Cocktail (T1 *mas, const T2 N) {
+        static void Cocktail (T1 *mas, const T2 N) {
             T2 control = N - 1;
             T2 left = 0;
             T2 right = N - 1;
@@ -93,7 +130,7 @@ namespace stepan_sort {
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
-        void Insertion (T1 *mas, const T2 N) {
+        static void Insertion (T1 *mas, const T2 N) {
             T2 i;
             T1 buffer;
             for (T2 j = 1; j < N; j++) {
@@ -116,7 +153,7 @@ namespace stepan_sort {
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
-        void Gnome (T1 *mas, const T2 N) {
+        static void Gnome (T1 *mas, const T2 N) {
             T2 i = 1;
             T2 j = 2;
             while (i < N) {
@@ -142,7 +179,7 @@ namespace stepan_sort {
          * В среднем: O(n*log(n))
          * */
         template<typename T1, typename T2>
-        void Merge(T1 *mas, const T2 N) {
+        static void Merge(T1 *mas, const T2 N) {
             if (N > 1) {
                 const T2 left_size = N / 2;
                 const T2 right_size = N - left_size;
@@ -183,7 +220,7 @@ namespace stepan_sort {
          * В среднем: O(n*log(n))
          * */
         template<typename T1, typename T2>
-        void Tree(T1 *mas, const T2 N) {
+        static void Tree(T1 *mas, const T2 N) {
             BinaryTree tree;
             for (T2 i = 0; i < N; i++) {
                 tree.insert(mas[i]);
@@ -257,12 +294,10 @@ namespace stepan_sort {
             void insert (double key) {
                 shared_ptr<BinaryTreeNode> node_to_insert(new BinaryTreeNode);
                 node_to_insert->key = key;
-
                 if(m_root == nullptr) {
                     m_root = node_to_insert;
                     return;
                 }
-
                 insert_recursive(m_root, node_to_insert);
             }
 
@@ -274,8 +309,8 @@ namespace stepan_sort {
             // cur_node - посещаемый в данный момент узел
             void visit_recursive (const shared_ptr<BinaryTreeNode>& cur_node, const Visitor& visitor) {
                 assert(cur_node != nullptr);
-
                 // сначала посещаем левое поддерево
+
                 if(cur_node->left != nullptr)
                     visit_recursive(cur_node->left, visitor);
 
@@ -307,7 +342,7 @@ namespace stepan_sort {
          * В среднем: O(n*log(n))
          * */
         template<typename T1, typename T2>
-        void Tim(T1 *mas, const T2 N) {
+        static void Tim(T1 *mas, const T2 N) {
             for (T2 i = 0; i < N; i+=RUN) {
                 insertionSort(mas, i, min((i + RUN - 1), (N - 1)));
             }
@@ -323,6 +358,7 @@ namespace stepan_sort {
         }
 
     private:
+        // Вспомогательные методы - тоже с сайта
         template<typename T1, typename T2>
         static void insertionSort(T1 *arr, T2 left, T2 right) {
             for (T2 i = left + 1; i <= right; i++) {
@@ -375,23 +411,39 @@ namespace stepan_sort {
 //============================================================================================================
 /*                                Алгоритмы неустойчивой сортировки                                         */
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Сортировка выбором - Делит входной массив на упорядоченную и неупорядоченную части. Затем
+         * последовательно переносит в первую часть наименьшие элементы из второй.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n^2)
+         * В лучшем случае: О(1)
+         * В среднем: O(n^2)
+         * */
         template<typename T1, typename T2>
-        void Selection (T1 *mas, const T2 N) {
-        for (T2 i = 0; i < N; i++) {
-            T2 min = i;
-            for (int j = i; j < N; j++) {
-                if (mas[j] < mas[min]) {
-                    min = j;
+        static void Selection (T1 *mas, const T2 N) {
+            for (T2 i = 0; i < N; i++) {
+                T2 min = i;
+                for (int j = i; j < N; j++) {
+                    if (mas[j] < mas[min]) {
+                        min = j;
+                    }
+                }
+                if (min != i) {
+                    swap(mas[min], mas[i]);
                 }
             }
-            if (min != i) {
-                swap(mas[min], mas[i]);
-            }
         }
-    }
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Сортировка расчёской - Модификация сортировки пузырьком, в которой расстояние между
+         * сравниваемыми парами значений отлично от 1.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n^2)
+         * В лучшем случае: О(1)
+         * В среднем: O((n^2)/(2^p))
+         * */
         template<typename T1, typename T2>
-        void Comb(T1 *mas, const T2 N) {
+        static void Comb(T1 *mas, const T2 N) {
             double factor = 1.2473309;
             T2 step = N - 1;
             while (step >= 1) {
@@ -404,8 +456,16 @@ namespace stepan_sort {
             }
         }
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Сортировка Шелла - Модификация сортировки вставками, в которой расстояние между
+         * сравниваемыми парами значений отлично от 1.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n^2)
+         * В лучшем случае: О(1)
+         * В среднем: O(n*log(n)^2)
+         * */
         template<typename T1, typename T2>
-        void Shell (T1 *mas, const T2 N) {
+        static void Shell (T1 *mas, const T2 N) {
             for (T2 s = N / 2; s > 0; s /= 2) {
                 for (T2 i = s; i < N; ++i) {
                     for (T2 j = i - s; (j >= 0) && (mas[j] > mas[j + s]); j -= s) {
@@ -415,8 +475,17 @@ namespace stepan_sort {
             }
         }
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Пирамидальная сортировка -  На основе исходных данных строится двоичная куча, в которой
+         * последовательно собираются минимальные значения.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n*log(n))
+         * В лучшем случае: О(n)
+         * В среднем: O(n*log(n))
+         * Взята с какого то сайта... ссылка не сохранилась
+         * */
         template<typename T1, typename T2>
-        void Heap(T1 *mas, const T2 N) {
+        static void Heap(T1 *mas, const T2 N) {
             // Формируем нижний ряд пирамиды
             for (T2 i = (N / 2); i >= 0; i--)
                 siftDown(mas, i, N - 1);
@@ -453,8 +522,17 @@ namespace stepan_sort {
         }
     public:
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Быстрая сортировка - Выбирается опорный элемент p. Все ключи, меньшие, либо равные p
+         * перемещаются, влево от него, а все ключи, большие, либо равные p вправо. Далее алгоритм рекурсивно
+         * применяется к каждой из частей.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n^2)
+         * В лучшем случае: О(1)
+         * В среднем: O(n*log(n))
+         * */
         template<typename T1, typename T2>
-        void Quick(T1 *mas, const T2 N) {
+        static void Quick(T1 *mas, const T2 N) {
             T2 left = 0;
             T2 right = N - 1;
             T1 central_element = mas[N / 2];
@@ -479,13 +557,22 @@ namespace stepan_sort {
             }
         }
 //------------------------------------------------------------------------------------------------------------
+        /** \brief Придурковатая сортировка - Меняет местами первый и последний элементы массива, если
+         * необходимо. Затем делит массив на три части, в каждой из которых запускается рекурсивно.
+         * \param mas массив
+         * \param N размер массива
+         * В худшем случае: O(n^2)
+         * В лучшем случае: О(1)
+         * В среднем: O(n*exp)
+         * */
         template<typename T1, typename T2>
-        void Stooge (T1 *mas, const T2 N) {
+        static void Stooge (T1 *mas, const T2 N) {
             Stooge(mas, 0, N);
         }
 
+        // Со воходом слева и справа
         template<typename T1, typename T2>
-        void Stooge (T1 *mas, const T2 l, const T2 r) {
+        static void Stooge (T1 *mas, const T2 l, const T2 r) {
             if (l >= r) {
                 return;
             }
@@ -500,14 +587,9 @@ namespace stepan_sort {
             }
         }
 //============================================================================================================
-/*                                Непрактичные алгоритмы сортировки                                         */
-//------------------------------------------------------------------------------------------------------------
-    } m;
-};
+    };
+} stepan_sort;
 
-using namespace stepan_sort;
+using ss = stepan_sort::StepanSort;
 
-/* Mетоды должны быть все статьические чтобы можно было комангду ниже сделать. */
-//using ss = stepan_sort::StepanSort;
-
-#endif  // PROJECT_INCLUDE_STEPANSORT_H_
+#endif  // STEPANSORT_H
