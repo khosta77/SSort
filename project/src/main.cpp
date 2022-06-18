@@ -1,9 +1,8 @@
-#include <iostream>
-#include <exception>
+#include "../include/testsort.h"
 
-using namespace std;
 
 int main(int argc, char **argv) {
+    testsort tstsrt;
     return 0;
 }
 
