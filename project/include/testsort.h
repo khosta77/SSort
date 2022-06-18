@@ -113,7 +113,6 @@ protected:
         }
 
         // Запишем заголовок
-        out << "#";
         for (size_t i = 0; i < TEST; i++) {
             out << df[i].first;
             if (i != (TEST - 1)) {
@@ -123,17 +122,7 @@ protected:
         out << endl;
 
         // Записываем данные
-        // Первая строка может быть в нулях.
-        for (size_t i = 0; i < TEST; i++) {
-            out << df[i].second[0];
-            if (i != (TEST - 1)) {
-                out << ";";
-            }
-        }
-        out << endl;
-
-        // Вторая и тд строки
-        for (size_t s_arr = 1; s_arr < (SIZE / STEP); s_arr++) {
+        for (size_t s_arr = 0; s_arr < (SIZE / STEP); s_arr++) {
             for (size_t i = 0; i < TEST; i++) {
                 if (s_arr < df[i].second.size()) {
                     out << df[i].second[s_arr];
