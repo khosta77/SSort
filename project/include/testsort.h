@@ -115,14 +115,20 @@ protected:
         // Запишем заголовок
         out << "#";
         for (size_t i = 0; i < TEST; i++) {
-            out << df[i].first << ";";
+            out << df[i].first;
+            if (i != (TEST - 1)) {
+                out << ";";
+            }
         }
         out << endl;
 
         // Записываем данные
         // Первая строка может быть в нулях.
         for (size_t i = 0; i < TEST; i++) {
-            out << df[i].second[0] << ";";
+            out << df[i].second[0];
+            if (i != (TEST - 1)) {
+                out << ";";
+            }
         }
         out << endl;
 
@@ -130,8 +136,9 @@ protected:
         for (size_t s_arr = 1; s_arr < (SIZE / STEP); s_arr++) {
             for (size_t i = 0; i < TEST; i++) {
                 if (s_arr < df[i].second.size()) {
-                    out << df[i].second[s_arr] << ";";
-                } else {
+                    out << df[i].second[s_arr];
+                }
+                if (i != (TEST - 1)) {
                     out << ";";
                 }
             }
