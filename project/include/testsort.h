@@ -54,7 +54,7 @@ protected:
     const int SIZE = 1000000; // Максимальный размер массива
     const int start_size = 0; // Начальный размер массива
     const int STEP = 500; // Шаг массива
-    const int TIME_OUT = 5000000; // Время выхода
+    const int TIME_OUT = 50000000; // Время выхода
 
     void test_sort (vector<pair<string, vector<int>>> &df, size_t num) {
         float progress = 0.0;
