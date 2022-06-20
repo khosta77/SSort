@@ -3,4 +3,4 @@
 make
 ./main
 
-python Analysis
+python Analysis.py

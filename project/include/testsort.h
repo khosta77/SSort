@@ -66,6 +66,7 @@ protected:
             unsigned int start_time = clock(); // начальное время
             foo[num](arr, size, df[num].first);
             unsigned int end_time = clock(); // конечное время
+            delete arr;
             unsigned int search_time = (end_time - start_time); // искомое время
 
             df[num].second.push_back(search_time);
