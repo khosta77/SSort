@@ -8,6 +8,8 @@
 #include <map>
 #include <ctime>
 #include "stepansort.h"
+#include <unistd.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,27 +17,11 @@ using namespace std;
 
 class testsort {
 public:
-    testsort() {
+    testsort () {
         vector<pair<string, vector<int>>> df(TEST);
         for (size_t sort_num = 0; sort_num < TEST; sort_num++) {
-            // Получим имя сортировки
-            foo[sort_num]( 0, 0, df[sort_num].first);
-            cout << df[sort_num].first << " - start"<< endl;
-
-            // Начинаем анализ сортировок
-            unsigned int start_time_all_sort = clock();
-
             test_sort( df, sort_num);
-
-            unsigned int end_time_all_sort = clock();
-            unsigned int search_time_all_sort = (end_time_all_sort - start_time_all_sort);
-
-            cout << df[sort_num].first << " - end. Time: " << search_time_all_sort << endl;
         }
-        cout << "---------------------------------------------------\n"
-             << "End analysis" << endl;
-
-//        output_the_result_to_cmd(df);
         output_the_result_to_csv(df);
     }
 
@@ -65,31 +51,54 @@ protected:
      * \TIME_OUT = 5000000
      * */
     const size_t TEST = 10; // Колличество сортировок
-    const int SIZE = 100000; // Максимальный размер массива
+    const int SIZE = 1000000; // Максимальный размер массива
     const int start_size = 0; // Начальный размер массива
-    const int STEP = 1000; // Шаг массива
-    const int TIME_OUT = 142538; // Время выхода
+    const int STEP = 500; // Шаг массива
+    const int TIME_OUT = 5000000; // Время выхода
 
-    void test_sort(vector<pair<string, vector<int>>> &df, size_t num) {
-        string buf;
+    void test_sort (vector<pair<string, vector<int>>> &df, size_t num) {
+        float progress = 0.0;
         for (int size = start_size; size <= SIZE;  size+=STEP) {
             int arr[size] = {};
             randmass(arr, size);
 
             srand(time(0));
             unsigned int start_time = clock(); // начальное время
-
-            foo[num](arr, size, buf);
-
+            foo[num](arr, size, df[num].first);
             unsigned int end_time = clock(); // конечное время
             unsigned int search_time = (end_time - start_time); // искомое время
 
             df[num].second.push_back(search_time);
 
+            // Красивый вывод статуса
+            progress = float(size) / float(SIZE);
+            int barWidth = 70;
+            cout << "[";
+            int pos = barWidth * progress;
+            for (int i = 0; i < barWidth; ++i) {
+                if (i < pos) {
+                    cout << "=";
+                }else if (i == pos) {
+                    cout << ">";
+                } else {
+                    cout << " ";
+                }
+            }
+            cout << "] " << setw(3) << int(progress * 100.0) << " %" << setw(10) << df[num].first << "Sort \r";
+            cout.flush();
             if (search_time >= TIME_OUT) {
+                cout << endl;
+                cout << df[num].first
+                     <<"Sort" << " - time out! " << search_time << " > "
+                     << TIME_OUT << " progress end in "
+                     << int(progress * 100.0)
+                     << " %"
+                     << "                                 "
+                     << endl;
                 return;
             }
         }
+        cout << endl;
     }
 
     void output_the_result_to_cmd (vector<pair<string, vector<int>>> df) {
@@ -113,7 +122,6 @@ protected:
         }
 
         // Запишем заголовок
-        out << "#";
         for (size_t i = 0; i < TEST; i++) {
             out << df[i].first;
             if (i != (TEST - 1)) {
@@ -123,17 +131,7 @@ protected:
         out << endl;
 
         // Записываем данные
-        // Первая строка может быть в нулях.
-        for (size_t i = 0; i < TEST; i++) {
-            out << df[i].second[0];
-            if (i != (TEST - 1)) {
-                out << ";";
-            }
-        }
-        out << endl;
-
-        // Вторая и тд строки
-        for (size_t s_arr = 1; s_arr < (SIZE / STEP); s_arr++) {
+        for (size_t s_arr = 0; s_arr < (SIZE / STEP); s_arr++) {
             for (size_t i = 0; i < TEST; i++) {
                 if (s_arr < df[i].second.size()) {
                     out << df[i].second[s_arr];
