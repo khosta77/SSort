@@ -7,7 +7,6 @@
 #include <memory>
 #include <cassert>
 #include <algorithm>
-#include <vector>
 #include <cstring>
 
 using namespace std;
