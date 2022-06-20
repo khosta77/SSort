@@ -8,3 +8,4 @@ CMakeCache.txt
 .ipynb_checkpoints
 *.png
 *.csv
+.gitignore
