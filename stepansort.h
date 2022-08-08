@@ -40,7 +40,7 @@ namespace stepan_sort {
          * \param N размер массива
          *
          * В худшем случае: О(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
@@ -58,7 +58,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: О(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
@@ -90,7 +90,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: О(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
@@ -113,7 +113,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: О(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: О(n^2)
          * */
         template<typename T1, typename T2>
@@ -302,7 +302,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: O(n*log(n))
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: O(n*log(n))
          * */
         template<typename T1, typename T2>
@@ -380,7 +380,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: O(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: O(n^2)
          * */
         template<typename T1, typename T2>
@@ -425,7 +425,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: O(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: O(n*log(n)^2)
          * */
         template<typename T1, typename T2>
@@ -492,7 +492,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: O(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: O(n*log(n))
          * */
         template<typename T1, typename T2>
@@ -526,7 +526,7 @@ namespace stepan_sort {
          * \param mas массив
          * \param N размер массива
          * В худшем случае: O(n^2)
-         * В лучшем случае: О(1)
+         * В лучшем случае: О(n)
          * В среднем: O(n*exp)
          * */
         template<typename T1, typename T2>
